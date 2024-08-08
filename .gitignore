@@ -1,0 +1,7 @@
+*.user
+.vscode/
+build
+install
+log
+cmake-build-debug
+.idea
