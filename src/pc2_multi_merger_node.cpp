@@ -26,7 +26,7 @@ private:
   void pc2_cb_(const sensor_msgs::msg::PointCloud2::SharedPtr& cloud, const std::string& topic);
   void pc2_topic_parser_();
 
-  std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
+	std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
 	std::shared_ptr<tf2_ros::TransformListener> tfListener_;
 
 	rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr point_cloud_publisher_;
@@ -43,13 +43,13 @@ private:
 
 PC2Merger::PC2Merger() : Node("pc2_multi_merger")
 {
-	this->declare_parameter<std::string>("destination_frame_", "merged_cloud_frame");
-	this->declare_parameter<std::string>("cloud_destination_topic_", "~/merged_cloud");
-	this->declare_parameter<std::string>("pc2_topics_", "");
+	this->declare_parameter<std::string>("destination_frame", "merged_cloud_frame");
+	this->declare_parameter<std::string>("cloud_destination_topic", "~/merged_cloud");
+	this->declare_parameter<std::string>("pc2_topics", "");
 
-	this->get_parameter("destination_frame_", destination_frame_);
-	this->get_parameter("cloud_destination_topic_", cloud_destination_topic_);
-	this->get_parameter("pc2_topics_", pc2_topics_);
+	this->get_parameter("destination_frame", destination_frame_);
+	this->get_parameter("cloud_destination_topic", cloud_destination_topic_);
+	this->get_parameter("pc2_topics", pc2_topics_);
 
 	tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
 	tfListener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
@@ -61,7 +61,6 @@ PC2Merger::PC2Merger() : Node("pc2_multi_merger")
 
 void PC2Merger::pc2_topic_parser_()
 {
-	// LaserScan topics to subscribe
 	std::map<std::string, std::vector<std::string>> topics;
 
 	istringstream iss(pc2_topics_);
