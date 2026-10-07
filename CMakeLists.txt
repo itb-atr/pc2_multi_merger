@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(pc2_multi_merger)
 
 # Default to C99
@@ -20,22 +20,27 @@ find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(pcl_ros REQUIRED)
 
-set(dependencies
-  rclcpp
-  sensor_msgs
-  tf2
-  tf2_ros
-  pcl_ros
-  PCL
-  tf2_geometry_msgs
-)
-
 # Build
 add_executable(pc2_multi_merger src/pc2_multi_merger_node.cpp)
-ament_target_dependencies(pc2_multi_merger ${dependencies})
+target_link_libraries(pc2_multi_merger PUBLIC
+  ${sensor_msgs_TARGETS}
+  pcl_ros::bag_to_pcd_lib
+  pcl_ros::combined_pointcloud_to_pcd_lib
+  pcl_ros::pcd_to_pointcloud_lib
+  pcl_ros::pcl_ros_filter
+  pcl_ros::pcl_ros_filters
+  pcl_ros::pcl_ros_tf
+  pcl_ros::pointcloud_to_pcd_lib
+  rclcpp::rclcpp
+  sensor_msgs::sensor_msgs_library
+  tf2::tf2
+  tf2_geometry_msgs::tf2_geometry_msgs
+  tf2_ros::static_transform_broadcaster_node
+  tf2_ros::tf2_ros
+  ${PCL_LIBRARIES}
+)
 target_include_directories(pc2_multi_merger PUBLIC ${EIGEN_INCLUDE_DIRS})
 target_include_directories(pc2_multi_merger PUBLIC ${PCL_INCLUDE_DIRS})
-target_link_libraries(pc2_multi_merger ${PCL_LIBRARIES})
 
 
 # Install
